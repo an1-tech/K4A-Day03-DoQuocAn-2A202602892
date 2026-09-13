@@ -54,6 +54,12 @@ python src/app.py --all
 > 
 > ⚠️ *Lưu ý:* Bài nộp chỉ chạy trên Mock Provider mà không kết nối LLM API thật sẽ bị trừ điểm phần nghiệm thu thực tế (Tiêu chí 2 & Tiêu chí 3 trong Rubric).
 
+### Giao diện demo Chatbot vs ReAct Agent
+
+Chạy `python src/ui_server.py`, rồi mở `http://127.0.0.1:8765` trên máy của bạn. Nhập một câu hỏi hoặc chọn câu hỏi mẫu và bấm **Chạy so sánh**. Giao diện dùng cùng cấu hình `.env` với ứng dụng dòng lệnh, gửi câu hỏi một lần cho Chatbot baseline và một lần cho ReAct Agent, rồi hiển thị các sự kiện Thought, Action, Observation và Final Answer có trong trace. Dừng máy chủ bằng `Ctrl+C`.
+
+Giao diện chỉ chạy trên `127.0.0.1`, không hiển thị API key và không ghi đè `docs/trace_waterfall.json`. Nếu `.env` đang chọn LLM API thật, mỗi lần bấm **Chạy so sánh** sẽ gửi hai yêu cầu tới dịch vụ LLM.
+
 ---
 
 ## 🎯 2. BỨC TRANH TỔNG THỂ & MỤC TIÊU DÀI HẠN (NORTH STAR GOAL)

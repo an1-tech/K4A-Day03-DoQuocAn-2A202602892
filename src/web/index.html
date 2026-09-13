@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1626">
+  <title>VinUni · Chatbot vs ReAct Agent</title>
+  <meta name="description" content="Giao diện demo so sánh Chatbot và ReAct Agent học vụ VinUni.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">V<span>·</span></span>
+        <div>
+          <strong>VINUNI <span>AI LAB</span></strong>
+          <small>DAY 03 / REACT AGENT</small>
+        </div>
+      </div>
+      <div class="runtime" aria-label="Trạng thái hệ thống">
+        <span class="runtime-dot" aria-hidden="true"></span>
+        <span id="runtime-label">Đang kiểm tra môi trường…</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="context-panel" aria-label="Thông tin bài lab">
+        <div class="section-eyebrow">ĐỀ TÀI 1.1</div>
+        <h2>Trợ lý học vụ VinUni</h2>
+        <p>Tra cứu hồ sơ sinh viên và đặt lịch tư vấn với cố vấn học tập.</p>
+
+        <div class="context-divider"></div>
+        <div class="score-heading">
+          <span>Agentic Fit</span>
+          <strong>15<span>/20</span></strong>
+        </div>
+        <div class="score-row"><span>Multi-step Reasoning</span><b>4/5</b></div>
+        <div class="score-row"><span>Tool Interaction</span><b>5/5</b></div>
+        <div class="score-row"><span>Dynamic Decision</span><b>4/5</b></div>
+        <div class="score-row"><span>Long Horizon Goal</span><b>2/5</b></div>
+
+        <div class="context-divider"></div>
+        <div class="section-eyebrow">CÔNG CỤ MCP</div>
+        <div class="tool-mini"><span class="tool-icon">01</span><div><strong>academic_query</strong><small>Tra cứu hồ sơ, GPA, cố vấn</small></div></div>
+        <div class="tool-mini"><span class="tool-icon">02</span><div><strong>schedule_appointment</strong><small>Đặt lịch tư vấn học vụ</small></div></div>
+
+        <p class="data-note">Hồ sơ sinh viên và lịch hẹn trong demo là dữ liệu mô phỏng của bài lab.</p>
+      </aside>
+
+      <section class="workspace" aria-labelledby="page-title">
+        <div class="workspace-heading">
+          <div>
+            <div class="section-eyebrow">SO SÁNH TRÊN CÙNG MỘT CÂU HỎI</div>
+            <h1 id="page-title">Chatbot <span>vs</span> ReAct Agent</h1>
+          </div>
+          <div class="model-pill" id="model-pill">Đang tải model</div>
+        </div>
+
+        <form id="compare-form" class="query-panel">
+          <label for="question">Câu hỏi của sinh viên</label>
+          <textarea id="question" name="question" maxlength="500" rows="3" required>Hãy tra cứu thông tin học vụ của sinh viên SV2026001.</textarea>
+          <div class="query-bottom">
+            <div class="examples" aria-label="Câu hỏi mẫu">
+              <button type="button" class="example-button" data-question="Hãy tra cứu thông tin học vụ của sinh viên SV2026001.">Tra cứu GPA</button>
+              <button type="button" class="example-button" data-question="Đặt lịch tư vấn học tập cho sinh viên SV2026001 lúc 14:00 ngày 15/09/2026 với cố vấn PGS.TS Nguyễn Văn A.">Đặt lịch tư vấn</button>
+            </div>
+            <button id="run-button" class="run-button" type="submit"><span aria-hidden="true">▶</span> Chạy so sánh</button>
+          </div>
+          <p id="run-status" class="run-status" role="status" aria-live="polite">Mỗi lần chạy gửi cùng câu hỏi tới hai chế độ.</p>
+        </form>
+
+        <div id="results" class="results-grid" aria-live="polite">
+          <article class="result-card baseline-card" aria-labelledby="baseline-title">
+            <div class="card-topline"><span class="card-index">01 / BASELINE</span><span class="no-tool-badge">KHÔNG CÓ TOOL</span></div>
+            <h2 id="baseline-title">Chatbot</h2>
+            <p class="card-description">LLM trả lời trực tiếp từ câu hỏi và system prompt.</p>
+            <div class="answer-label">CÂU TRẢ LỜI</div>
+            <div id="baseline-answer" class="answer-content empty-answer">Nhấn “Chạy so sánh” để xem Chatbot trả lời.</div>
+          </article>
+
+          <article class="result-card agent-card" aria-labelledby="agent-title">
+            <div class="card-topline"><span class="card-index">02 / AGENT</span><span class="mcp-badge">MCP CONNECTED</span></div>
+            <h2 id="agent-title">ReAct Agent</h2>
+            <p class="card-description">Quyết định gọi tool, nhận Observation và đưa ra kết luận.</p>
+            <div class="trace-heading"><span>WATERFALL TRACE</span><span id="trace-count">0 lượt gọi tool</span></div>
+            <div id="trace-list" class="trace-list">
+              <div class="trace-empty">Thought <span>→</span> Action <span>→</span> Observation <span>→</span> Final Answer</div>
+            </div>
+            <div class="agent-final"><div class="answer-label">FINAL ANSWER</div><div id="agent-answer" class="answer-content empty-answer">Kết quả Agent sẽ hiện ở đây.</div></div>
+          </article>
+        </div>
+        <p class="trace-note">“Thought” là mô tả quyết định được hệ thống ghi lại, không phải toàn bộ suy luận nội bộ của mô hình.</p>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

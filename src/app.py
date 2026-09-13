@@ -139,6 +139,7 @@ def run_react_agent(user_query: str, provider, mcp_server: MCPAcademicServer) ->
                 "step": step,
                 "query": user_query,
                 "action_type": "TOOL_EXECUTION",
+                "thought": thought,
                 "tool_name": tool_name,
                 "arguments": arguments,
                 "observation": obs_data,
